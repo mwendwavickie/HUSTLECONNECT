@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import authRoute from './routes/authRoute.js';
+import categoryRoute from './routes/categoryRoutes.js';
 
 //load enviroment variables
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(express.json());// parse json data
 app.use(cors());//Enable cors for cross origin requests
 
 app.use('/api/auth', authRoute);
+app.use('/api/categories', categoryRoute);
 
 //Routes
 app.get('/', (req,res) => {
