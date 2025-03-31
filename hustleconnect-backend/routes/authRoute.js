@@ -28,6 +28,7 @@ router.post('/register', async(req,res) => {
             name,
             email,
             password: hashedPassword,
+            role
         })
         await user.save();
         res.status(201).json({message: 'User registered successfully'});
@@ -63,7 +64,8 @@ router.post ('/login', async(req,res) => {
         }
         //Create a token
         const token = jwt.sign({id: user._id, role: user.role}, process.env.JWT_SECRET, {expiresIn: '1h'});
-        res.json({token, user: {id: user._id, name: user.name, email: user.email}});
+        res.json({token, user: {id: user._id, name: user.name, email: user.email, role: user.role}});// Send the token and user data in the response
+        console.log("Token generated:", token);
 
     } catch (error) {
         console.error("Error in login:", error);  // Log the error
