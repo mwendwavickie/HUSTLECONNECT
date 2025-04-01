@@ -9,7 +9,9 @@ import jwt from 'jsonwebtoken';
 const router = express.Router();
 
 router.post('/register', async(req,res) => {
-    const {name, email, password} = req.body;
+    const {name, email, password, role} = req.body;
+
+    const userRole = ["customer", "vendor", "admin"].includes(role) ? role : "customer";
 
     try{
         console.log("Received request:", req.body);
@@ -28,7 +30,7 @@ router.post('/register', async(req,res) => {
             name,
             email,
             password: hashedPassword,
-            role
+            role: userRole
         })
         await user.save();
         res.status(201).json({message: 'User registered successfully'});
@@ -60,7 +62,7 @@ router.post ('/login', async(req,res) => {
         //Compare the password
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch) {
-            return res.status(400).json({messgae: "Invalid credentials"});
+            return res.status(400).json({message: "Invalid credentials"});
         }
         //Create a token
         const token = jwt.sign({id: user._id, role: user.role}, process.env.JWT_SECRET, {expiresIn: '1h'});

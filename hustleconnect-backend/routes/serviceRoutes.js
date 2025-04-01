@@ -1,6 +1,7 @@
 import express from "express";
 import Service from "../models/Service.js";
 import authMiddleware from "../middleware/authMiddleware.js";
+import Category from "../models/Category.js";
 
 const router = express.Router();
 
@@ -11,22 +12,43 @@ const router = express.Router();
 router.post ("/", authMiddleware, async (req, res) => {
     // Check if the user is a vendor
     if (req.user.role !== "vendor") {
-        return res.status(403).json({ message: "Acess denied" });  
+        return res.status(403).json({ message: "Access denied" });  
     }
     try{
-        const { title, description, price, category, location } = req.body;
+        console.log("Received request:", req.body); // Log request body
+        console.log("User:", req.user); // Log authenticated user
+        // Destructure the request body
+        const { title, description, price, category, location, contact} = req.body;
+
+        // Validate the request body
+        if (!title || !description || !price || !category || !location || !contact ) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        // Convert category name to ObjectId
+        const categoryDoc = await Category.findOne({ name: category });
+
+        if (!categoryDoc) {
+            return res.status(400).json({ message: "Invalid category" });
+        }
+
+        console.log("User ID:", req.user._id);
+
         const service = new Service ({
             title,
             description,
             price,
-            category,
-            User: req.user._id, // Vendor Id
+            category: categoryDoc._id, // Use ObjectId of the category
+            user: req.user._id,// Vendor Id
+            contact,
             location,
         });
+        console.log(title);
         await service.save();
         res.status(201).json({ message: "Service created successfully" });
     }catch (error){
-        res.status(500).json({ message: "Server error" });
+        console.error("Error creating service:", error.message);
+        res.status(500).json({ message: " Internal Server error" });
     }
 });
 
