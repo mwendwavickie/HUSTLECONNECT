@@ -83,6 +83,35 @@ router.put('/bookings/:id', authMiddleware, async (req, res) => {
         console.error(error);
         }
     });
+// @route   DELETE /api/bookings/:id
+// @desc    Cancel a booking (Customer only)
+// @access  Private (Customer)
 
+router.delete('/bookings/:id', authMiddleware, async (req,res) => {
+    if (req.user.role !== 'customer'){
+        return res.status(403).json({ message: "Only customers can cancel bookings"});
+    }
+    try {
+        const booking = await Bokking.findById(req.params.id);
+
+        if (!booking){
+            return res.status(404).json({ message: "Booking not found"});
+        }
+        if(booking.customer.toString() !== req.user.id){
+            return res.status(403).json({ message: "Unauthorized access"});
+        }
+        if (booking.status === "completed"){
+            return res.status(400).json({ message: "Cannot cancel a completed booking"});
+        }
+        if (booking.status === "cancelled"){
+            return res.status(400).json({ message: "Booking already cancelled"});
+        }
+         booking.status = "cancelled";
+         await booking.save();
+         res.json({ message: "Booking cancelled successfully"});
+    } catch (error) {
+        res.status(500).json({ message: "Server error"});
+    }
+});
 
 export default router;
