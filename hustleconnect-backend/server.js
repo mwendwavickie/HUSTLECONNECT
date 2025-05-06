@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import authRoute from './routes/authRoute.js';
 import categoryRoute from './routes/categoryRoutes.js';
 import serviceRoute from './routes/serviceRoutes.js';
+import bookingRoute from './routes/bookingRoute.js';
 
 //load enviroment variables
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(cors());//Enable cors for cross origin requests
 app.use('/api/auth', authRoute);
 app.use('/api/categories', categoryRoute);
 app.use('/api/services', serviceRoute);
+app.use('/api/bookings', bookingRoute);
 
 //Routes
 app.get('/', (req,res) => {
