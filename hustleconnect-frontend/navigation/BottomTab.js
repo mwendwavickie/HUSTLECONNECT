@@ -2,8 +2,8 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import ServiceScreen from "../screens/ServiceScreen";
-//import BookingScreen from "../screens/BookingScreen";
-//import ProfileScreen from "../screens/ProfileScreen";
+import BookingScreen from "../screens/BookingScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
@@ -17,8 +17,8 @@ const BottomTab = () => {
                 switch (route.name) {
                     case 'Home': iconName = 'home'; break;
                     case 'Services': iconName = 'briefcase'; break;
-                    //case 'Booking': iconName = 'calendar'; break;
-                    //case 'Profile': iconName = 'person'; break;
+                    case 'Booking': iconName = 'calendar'; break;
+                    case 'Profile': iconName = 'person'; break;
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
             },
@@ -29,6 +29,8 @@ const BottomTab = () => {
         >
             <Tab.Screen name="Home" component={HomeScreen} />
             <Tab.Screen name="Services" component={ServiceScreen} />
+            <Tab.Screen name="Booking" component={BookingScreen} /> 
+            <Tab.Screen name="Profile" component={ProfileScreen} /> 
             
         </Tab.Navigator>
     );

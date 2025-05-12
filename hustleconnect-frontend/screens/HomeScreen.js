@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
         </View>
         </ImageBackground>
-    );
+        );
 }
 export default HomeScreen;
 
