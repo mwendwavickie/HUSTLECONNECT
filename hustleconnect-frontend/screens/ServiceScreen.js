@@ -78,6 +78,8 @@ const ServiceScreen = ()=> {
                 data={filteredServices}
                 keyExtractor={(service) => service._id}
                 renderItem={renderService}
+                numColumns={2}
+                columnWrapperStyle={styles.row}
                 contentContainerStyle={{paddingBottom: 20}}
                 ListEmptyComponent={<Text style={styles.noResult}> No Results Found</Text>}
                 />
@@ -102,12 +104,15 @@ const styles = StyleSheet.create({
     searchContainer: {
         flexDirection: 'row',
         marginBottom: 20,
+        
     },
     clearButton: {
-        borderColor: 'tomato',
+        borderColor: 'orange',
+        borderWidth: 1,
         padding: 10,
         borderRadius: 5,
         marginLeft: 10,
+        height: 40,
     },
     searchInput: {
         height: 40,
@@ -118,12 +123,17 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 15,
     },
+    row: {
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
     card: {
         backgroundColor: '#f9f9f9',
         padding: 15,
         borderRadius:8,
         elevation: 2,
         marginBottom: 15,
+        width: '48%',
     },
     title:{
         fontSize: 18,
