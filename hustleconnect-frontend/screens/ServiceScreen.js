@@ -1,12 +1,14 @@
 import react from 'react';
 import { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {View, Text, StyleSheet, ActivityIndicator, TextInput, FlatList, TouchableOpacity} from 'react-native';
+//import { FlatList, TextInput } from 'react-native-gesture-handler';
 
 
 const ServiceScreen = ()=> {
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [filteredServices, setFilteredServices] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const fetchServices = async () => {
         try {
@@ -14,6 +16,7 @@ const ServiceScreen = ()=> {
             const data = await response.json();
             console.log('Fetched services:', data);
             setServices(data);
+            setFilteredServices(data);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching services:', error);
@@ -23,6 +26,20 @@ const ServiceScreen = ()=> {
     useEffect(() => {
         fetchServices();
     }, []);
+
+    const handleSearch =(query) => {
+        setSearchQuery(query);
+        const filtered = services.filter(service => 
+            service.category.name.toLowerCase().includes(query.toLowerCase()) ||
+            service.title.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredServices(filtered);
+    }
+    const handleClear = () => {
+        setSearchQuery('');
+        setFilteredServices(services);
+    };
+
 
     const renderService = ({ item: service }) => {
         return(
@@ -37,14 +54,32 @@ const ServiceScreen = ()=> {
     return(
         <View style={styles.container}>
             <Text style={styles.header}>Available Services</Text>
+
+            <View style={styles.searchContainer}>
+            <TextInput 
+            style={styles.searchInput}
+            placeholder='Search services...'
+            value={searchQuery}
+            onChangeText={handleSearch}
+            />
+
+            <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
+            <Text>clear</Text>
+            </TouchableOpacity>
+
+            </View>
+
+            
+
             {loading ? (
                 <ActivityIndicator size="large" color= "blue" />
             ):(
                 <FlatList
-                data={services}
+                data={filteredServices}
                 keyExtractor={(service) => service._id}
                 renderItem={renderService}
                 contentContainerStyle={{paddingBottom: 20}}
+                ListEmptyComponent={<Text style={styles.noResult}> No Results Found</Text>}
                 />
             )}
         </View>
@@ -63,6 +98,25 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 20,
         color: '#333',
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        marginBottom: 20,
+    },
+    clearButton: {
+        borderColor: 'tomato',
+        padding: 10,
+        borderRadius: 5,
+        marginLeft: 10,
+    },
+    searchInput: {
+        height: 40,
+        width: '80%',
+        borderColor: 'orange',
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        marginBottom: 15,
     },
     card: {
         backgroundColor: '#f9f9f9',
@@ -90,5 +144,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#777',
         marginTop: 5,
+    },
+    noResult: {
+        textAlign: 'center',
+        fontSize: 16,
+        color: '#999',
+        marginTop: 20,
     }
 })
