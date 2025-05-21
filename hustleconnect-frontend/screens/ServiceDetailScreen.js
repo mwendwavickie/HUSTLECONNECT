@@ -3,10 +3,12 @@ import {View, Text, StyleSheet, TouchableOpacity, Image, Button} from "react-nat
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from "@react-navigation/native";
+import { useContext } from "react";
+import { BookingContext } from "../components/BookingContext";
 
 const ServiceDetailScreen = ({ route }) => {
     const navigation = useNavigation();
-
+    const addBooking = useContext(BookingContext);
 
     const {service} = route.params;
     const [selectedDate, setSelectedDate ]= useState(new Date());
@@ -32,6 +34,17 @@ const ServiceDetailScreen = ({ route }) => {
     const handleBooking = () => {
         if (!isAvailable) return alert('Booking is not available for this date');
         alert(`Booking confirmed for ${service.title} on ${selectedDate.toLocaleDateString()} at ${time.toLocaleTimeString()}`);
+
+        const newBooking = {
+            id: service.id,
+            title: service.title,
+            description: service.description,
+            price: service.price,
+            date: selectedDate.toLocaleDateString(),
+            time: time.toLocaleTimeString(),
+        }
+        addBooking(newBooking);
+        navigation.navigate('Bookings');
 };
 
 return (
