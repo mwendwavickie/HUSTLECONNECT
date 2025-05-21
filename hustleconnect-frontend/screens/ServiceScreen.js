@@ -1,14 +1,20 @@
 import react from 'react';
 import { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, ActivityIndicator, TextInput, FlatList, TouchableOpacity} from 'react-native';
-//import { FlatList, TextInput } from 'react-native-gesture-handler';
+import {View, Text, StyleSheet, ActivityIndicator, TextInput, FlatList, TouchableOpacity, Image} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
+const placeholderImage = 'https://via.placeholder.com/150'; // Placeholder image URL
 
 const ServiceScreen = ()=> {
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filteredServices, setFilteredServices] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [favourites, setFavourites] = useState([]);
+
+    const navigation = useNavigation();
+    
 
     const fetchServices = async () => {
         try {
@@ -45,9 +51,13 @@ const ServiceScreen = ()=> {
         return(
             <View style={styles.card}>
             <Text style={styles.title}>{service.title}</Text>
-            <Text style={styles.description}>{service.description}</Text>
             <Text style={styles.price}>Ksh.{service.price}</Text>
             <Text style={styles.vendor}>By: {service.User?.name || 'Unknown'}</Text>
+
+            <TouchableOpacity style={styles.bookBtn} onPress={()=> navigation.navigate('Bookings'  , { serviceId: service._id })}>
+                <Ionicons name="calendar" size={20} color="black" style={styles.bookBtnIcon} />
+                <Text style={styles.bookBtnText}> Book Now </Text>
+            </TouchableOpacity>
         </View>
         ) 
     }
@@ -56,16 +66,18 @@ const ServiceScreen = ()=> {
             <Text style={styles.header}>Available Services</Text>
 
             <View style={styles.searchContainer}>
+            <Ionicons name="search" size={20} color="#333" style={styles.searchIcon} />
             <TextInput 
             style={styles.searchInput}
             placeholder='Search services...'
             value={searchQuery}
             onChangeText={handleSearch}
             />
-
             <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
-            <Text>clear</Text>
+            <Ionicons name="close-circle" size={20} color="gray" />
             </TouchableOpacity>
+
+           
 
             </View>
 
@@ -104,24 +116,35 @@ const styles = StyleSheet.create({
     searchContainer: {
         flexDirection: 'row',
         marginBottom: 20,
-        
-    },
-    clearButton: {
         borderColor: 'orange',
         borderWidth: 1,
-        padding: 10,
-        borderRadius: 5,
-        marginLeft: 10,
-        height: 40,
-    },
-    searchInput: {
-        height: 40,
-        width: '80%',
-        borderColor: 'orange',
-        borderWidth: 1,
-        paddingHorizontal: 10,
         borderRadius: 8,
         marginBottom: 15,
+        paddingHorizontal: 10,
+        
+    },
+    
+    searchInput: {
+        flex: 1,
+        height: 40,
+        width: '80%',
+        paddingLeft: 40,
+    },
+    searchIcon: {
+        marginRight: 6,
+        position: 'absolute',
+        left: 10,
+        top: 10,
+    },
+    clearButton: {
+        marginLeft: 6,
+        right: 2,
+        top: 10,
+
+    },
+    searchText: {
+        fontSize: 16,
+        color: '#333',
     },
     row: {
         justifyContent: 'space-between',
@@ -138,7 +161,7 @@ const styles = StyleSheet.create({
     title:{
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#222',
+        color: 'orange',
     },
     description: {
         fontSize: 14,
@@ -148,12 +171,28 @@ const styles = StyleSheet.create({
     price: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#333',
+        color: 'orange',
     },
     vendor: {
         fontSize: 12,
         color: '#777',
         marginTop: 5,
+    },
+    bookBtn:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#ff9900',
+        paddingVertical: 8,
+        borderRadius: 6,
+        marginTop: 10,
+    },
+    bookBtnText: {
+        fontSize: 16,
+        color: '#fff',
+        marginLeft: 5,
+    },
+    bookBtnIcon: {
+        marginLeft: 5,
     },
     noResult: {
         textAlign: 'center',
