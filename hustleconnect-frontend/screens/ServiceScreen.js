@@ -11,7 +11,7 @@ const ServiceScreen = ()=> {
     const [loading, setLoading] = useState(true);
     const [filteredServices, setFilteredServices] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [favourites, setFavourites] = useState([]);
+    const [favorites, setFavorites] = useState([]);
 
     const navigation = useNavigation();
     
@@ -45,20 +45,46 @@ const ServiceScreen = ()=> {
         setSearchQuery('');
         setFilteredServices(services);
     };
+    const handleFavorite = (id) => {
+        setFavorites(prev => ({ ...prev, [id]: !prev[id] }));
+    };
 
 
     const renderService = ({ item: service }) => {
         return(
-            <View style={styles.card}>
-            <Text style={styles.title}>{service.title}</Text>
-            <Text style={styles.price}>Ksh.{service.price}</Text>
-            <Text style={styles.vendor}>By: {service.User?.name || 'Unknown'}</Text>
+            <TouchableOpacity 
+                style={styles.card}
+                onPress={() => navigation.navigate('ServiceDetail', { service })} 
+            >
+                <Image
+                    source={{ uri:'../Background.jpg' }}
+                    style={styles.image}
+                />
+                <TouchableOpacity
+                    style={styles.favoriteIcon}
+                    onPress={() => handleFavorite(service._id)}
+                >
+                    <Ionicons
+                        name={favorites[service._id] ? 'heart' : 'heart-outline'}
+                        size={22}
+                        color={favorites[service._id] ? 'red' : '#555'}
+                    />
+                </TouchableOpacity>
+                <Text style={styles.title}>{service.title}</Text>
+                <Text style={styles.price}>Ksh.{service.price}</Text>
+                
+                <TouchableOpacity
+                style={styles.bookBtn}
+                onPress={() => navigation.navigate('Booking', { service })}
+                >
+                    <Ionicons name="calendar" size={20} color="black" style={styles.bookBtnIcon} />
+                <Text style={styles.bookBtnText}>Book Now</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.bookBtn} onPress={()=> navigation.navigate('Bookings'  , { serviceId: service._id })}>
-                <Ionicons name="calendar" size={20} color="black" style={styles.bookBtnIcon} />
-                <Text style={styles.bookBtnText}> Book Now </Text>
+            
+
             </TouchableOpacity>
-        </View>
+            
         ) 
     }
     return(
@@ -199,5 +225,21 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#999',
         marginTop: 20,
-    }
+    },
+    image: {
+        width: '100%',
+        height: 150,
+        borderRadius: 8,
+        marginBottom: 8,
+    },
+    favoriteIcon: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 5,
+        zIndex: 1,
+    },
+
 })
