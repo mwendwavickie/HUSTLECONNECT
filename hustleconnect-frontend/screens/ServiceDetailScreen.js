@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import {View, Text, StyleSheet, TouchableOpacity, Image, Button} from "react-native";
+import {View, Text, StyleSheet, TouchableOpacity, Image, Button, Alert} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import TimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
 import { BookingContext } from "../components/BookingContext";
 
 const ServiceDetailScreen = ({ route }) => {
     const navigation = useNavigation();
-    const addBooking = useContext(BookingContext);
-
+    const { addBooking } = useContext(BookingContext);
     const {service} = route.params;
+
     const [selectedDate, setSelectedDate ]= useState(new Date());
     const [showPicker,setShowPicker] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState(false);
     const [isAvailable, setIsAvailable] = useState(null);
     const [time, setTime] = useState(new Date());
 
@@ -20,9 +22,9 @@ const ServiceDetailScreen = ({ route }) => {
         setShowPicker(false);
         if(date) {
             setSelectedDate(date);
-            const today = newDate();
-            const diff = (date-today)/(1000*3600*24);
-            setIsAvailable(diff>=1);//Available if booking date is 1 day ahead
+            const today = new Date();
+            const diff = (date - today)/(1000*3600*24);
+            setIsAvailable(diff >= 1);//Available if booking date is 1 day ahead
         }
     };
     const handleTimeChange = (event, selectedTime) => {
@@ -32,11 +34,15 @@ const ServiceDetailScreen = ({ route }) => {
         }
     };
     const handleBooking = () => {
-        if (!isAvailable) return alert('Booking is not available for this date');
-        alert(`Booking confirmed for ${service.title} on ${selectedDate.toLocaleDateString()} at ${time.toLocaleTimeString()}`);
+        if (!isAvailable) {
+            Alert.alert('Booking is not available for this date');
+            return;
+        }
+        
 
         const newBooking = {
-            id: service.id,
+            id: Date.now().toString(),
+            serviceId: service._id,
             title: service.title,
             description: service.description,
             price: service.price,
@@ -44,7 +50,8 @@ const ServiceDetailScreen = ({ route }) => {
             time: time.toLocaleTimeString(),
         }
         addBooking(newBooking);
-        navigation.navigate('Bookings');
+        Alert.alert('Booking Confirmed', `${service.title} booked for ${newBooking.date} at ${newBooking.time}`);
+        navigation.navigate('Main', {screen: 'Bookings'});
 };
 
 return (
@@ -80,13 +87,34 @@ return (
                 minimumDate={new Date()}
             />
         )}
+        <Text style={styles.dateText}>Select Time:</Text>
+        <TouchableOpacity 
+            onPress={() => setShowTimePicker(true)}
+            style={styles.dateButton}
+        >
+            <Ionicons name="time" size={24} color="black" />
+            <Text style={styles.date}>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+        </TouchableOpacity>
 
-        isAvailable !== null && (
+        {showTimePicker && (
+        <DateTimePicker
+            value={time}
+            mode="time"
+            display="default"
+            onChange={(event, selectedTime) => {
+                setShowTimePicker(false);
+                if (selectedTime) setTime(selectedTime);
+            }}
+        />
+     )}
+
+
+        {isAvailable !== null && (
             <Text style={styles.availabilityText}>
                 {isAvailable ? "Available" : "Not Available"}
             </Text>
 
-        )
+        )}
         <TouchableOpacity 
         onPress={handleBooking}
         style={[styles.bookButton,
@@ -151,6 +179,7 @@ const styles = StyleSheet.create({
         width: '50%',
         borderColor: '#ddd',
         marginBottom: 20,
+        
     },
     dateText: {
         fontSize: 16,
