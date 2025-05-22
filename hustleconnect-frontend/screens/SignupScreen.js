@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { Picker } from '@react-native-picker/picker';
 
 const SignupScreen = () => {
     const navigation = useNavigation();
@@ -9,24 +11,69 @@ const SignupScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [role, setRole] = useState("user"); // Default role
+    const [loading, setLoading] = useState(false);
 
 
-    const handleSignup = () => {
+    const validateForm = () => {
         if (!name || !email || !password || !confirmPassword) {
             return Alert.alert("Error", "Please fill in all fields");
         }
 
-        if (password !== confirmPassword) {
-            return Alert.alert("Error", "Passwords do not match");
-        }
+        //Alert.alert("Success", "Account created successfully");
+        //navigation.navigate("Login");
 
-        Alert.alert("Success", "Account created successfully");
-        navigation.navigate("Login");
+        const emailRegex = /\S+@\S+\.\S+/;
+        if(!emailRegex.test(email)) {
+            Alert.alert("Error", "Please enter a valid email address");
+            return false;
+        }
+        if(password.length < 6) {
+            Alert.alert("Error", "Password must be at least 6 characters long");
+            return false;
+        }
+        if (password !== confirmPassword) {
+            Alert.alert("Error", "Passwords do not match");
+            return false;
+        }
+        return true;
     };
+
+    const handleSignup = async() => {
+        if (!validateForm()) return;
+
+        setLoading(true);
+        try {
+            const response = await fetch("http://192:168.1.137:5000/api/auth/signup", {
+                method: "POST",
+                headers: {"Content-Type": 'application/json'},
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password,
+                    role,
+                }),
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    throw new Error(data.message || 'Signup failed');
+                }
+                Alert.alert("Success", "Account created successfully");
+                navigation.navigate("Login");
+            
+        } catch (error) {
+            Alert.alert("Error", error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
 
     return(
         <View style={styles.container}>
-            <Text style={styles.title}>Sign Up</Text>
+            <Text style={styles.title}>Create Account</Text>
 
             <TextInput
             style={styles.input}
@@ -60,8 +107,17 @@ const SignupScreen = () => {
             secureTextEntry
             />
 
-            <TouchableOpacity style={styles.button} onPress={handleSignup}>
-                <Text style={styles.buttonText}>Sign Up</Text>
+            <View style={styles.roleContainer}>
+                <Text style={styles.roleLabel}>Select Role:</Text>
+                <Picker selectedValue={role} onValueChange={(itemValue) => setRole(itemValue)} style={styles.picker}>
+                    <Picker.Item label="User" value="user" />
+                    <Picker.Item label="Vendor" value="vendor" />
+                    
+                </Picker>
+            </View>
+
+            <TouchableOpacity style={styles.button} onPress={handleSignup} disabled={loading}>
+                <Text style={styles.buttonText}>{loading? 'Signing up...': 'Sign Up'}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
@@ -111,8 +167,19 @@ const styles = StyleSheet.create({
         marginTop: 15,
         textAlign: "center",
     },
-    
+    roleContainer: {
+        marginVertical: 10,
 
-
+    },
+    roleLabel: {
+        fontSize: 16,
+        marginBottom: 5,
+        marginLeft:5,
+    },
+    picker: {
+        borderWidth: 1,
+        borderColor: "#ddd",
+        height: 50,
+    },
 
 })
