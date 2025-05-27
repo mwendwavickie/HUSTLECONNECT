@@ -5,7 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import TimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
-import { BookingContext } from "../components/BookingContext";
+import { BookingContext } from "../context/BookingContext";
 
 const ServiceDetailScreen = ({ route }) => {
     const navigation = useNavigation();
