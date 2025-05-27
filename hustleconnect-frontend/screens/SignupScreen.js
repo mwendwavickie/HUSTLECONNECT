@@ -1,11 +1,13 @@
-import React, {useState} from "react";
+import React, {useState, useContext } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Picker } from '@react-native-picker/picker';
+import { AuthContext } from "../context/AuthContext";
 
 const SignupScreen = () => {
     const navigation = useNavigation();
+    const { login } = useContext(AuthContext);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -56,11 +58,12 @@ const SignupScreen = () => {
                 });
                 const data = await response.json();
 
-                if (response.ok) {
+                if (!response.ok) {
                     throw new Error(data.message || 'Signup failed');
                 }
+                login(data.user);
                 Alert.alert("Success", "Account created successfully");
-                navigation.navigate("Login");
+                navigation.navigate("Home");
             
         } catch (error) {
             Alert.alert("Error", error.message);
