@@ -18,7 +18,7 @@ const ServiceScreen = ()=> {
 
     const fetchServices = async () => {
         try {
-            const response = await fetch('http://192.168.1.137:5000/api/services');
+            const response = await fetch('http://192.168.1.137:6000/api/services');
             const data = await response.json();
             console.log('Fetched services:', data);
             setServices(data);
@@ -75,7 +75,7 @@ const ServiceScreen = ()=> {
                 
                 <TouchableOpacity
                 style={styles.bookBtn}
-                onPress={() => navigation.navigate('Booking', { service })}
+                onPress={() => navigation.navigate('ServiceDetail', { service })}
                 >
                     <Ionicons name="calendar" size={20} color="black" style={styles.bookBtnIcon} />
                 <Text style={styles.bookBtnText}>Book Now</Text>
@@ -89,7 +89,7 @@ const ServiceScreen = ()=> {
     }
     return(
         <View style={styles.container}>
-            <Text style={styles.header}>Available Services</Text>
+            
 
             <View style={styles.searchContainer}>
             <Ionicons name="search" size={20} color="#333" style={styles.searchIcon} />
