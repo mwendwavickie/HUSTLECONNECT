@@ -13,6 +13,8 @@ const SignupScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [role, setRole] = useState("user"); // Default role
     const [loading, setLoading] = useState(false);
 
@@ -78,37 +80,63 @@ const SignupScreen = () => {
         <View style={styles.container}>
             <Text style={styles.title}>Create Account</Text>
 
-            <TextInput
-            style={styles.input}
-            placeholder="Full Name"
-            value={name}
-            onChangeText={setName}
-            />
+            <View style={styles.inputWrapper}>
+                <Ionicons name="person-circle-outline" size={24} color="#ff9900" style={{ marginRight: 20 }} />
+                <TextInput
+                style={styles.input}
+                placeholder="Full Name"
+                value={name}
+                onChangeText={setName}
+                />
+            </View>
 
-            <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            />
+            <View style={styles.inputWrapper}>
+                <Ionicons name="mail-outline" size={24} color="#ff9900" style={{ marginRight: 10 }} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+            </View>
 
-            <TextInput 
-            style={styles.input}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            />
-
-            <TextInput 
-            style={styles.input}
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry
-            />
+            <View style={styles.inputWrapper}>
+                <Ionicons name="lock-closed-outline" size={24} color="#ff9900" style={{ marginRight: 10 }} />
+                <TextInput 
+                style={styles.input}
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry = {!showPassword}
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                    <Ionicons
+                    name={showPassword ? "eye-off-outline" : "eye-outline"}
+                    size={20}
+                    color="#999"
+                    />
+                </TouchableOpacity>
+            </View>
+            
+            <View style={styles.inputWrapper}>
+                <Ionicons name="lock-closed-outline" size={24} color="#ff9900" style={{ marginRight: 10 }} />
+                <TextInput 
+                style={styles.input}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                secureTextEntry = {!showConfirmPassword}
+                />
+                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                    <Ionicons
+                    name={showConfirmPassword ? "eye-off-outline" : "eye-outline"}
+                    size={20}
+                    color="#999"
+                    />
+                </TouchableOpacity>
+            </View>
 
             <View style={styles.roleContainer}>
                 <Text style={styles.roleLabel}>Select Role:</Text>
@@ -143,16 +171,25 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginBottom: 25,
         textAlign: "center",
-        color: "#ff9900",
+        color: "black",
     },
-    input: {
-        height: 50,
+    inputWrapper: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
         borderWidth: 1,
         borderColor: "#ddd",
         borderRadius: 8,
-        padding: 14,
+        paddingHorizontal: 10,
         marginBottom: 15,
-    },
+        backgroundColor: "#fff",
+      },
+      input: {
+        flex: 1,
+        height: 50,
+        fontSize: 16,
+        paddingRight: 10,
+      },
     button: {
         backgroundColor: "#ff9900",
         padding: 15,
