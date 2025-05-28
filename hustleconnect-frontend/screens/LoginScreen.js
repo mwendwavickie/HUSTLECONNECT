@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
+import { Ionicons } from "@expo/vector-icons";
 
 
 
@@ -11,6 +12,8 @@ const LoginScreen = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
     
@@ -41,7 +44,8 @@ const LoginScreen = () => {
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Login</Text>
-
+            <View style={styles.inputWrapper}>
+             <Ionicons name="mail-outline" size={20} color="#999" style={styles.inputIcon} />
             <TextInput 
             placeholder="Email"
             style={styles.input}
@@ -50,7 +54,10 @@ const LoginScreen = () => {
             autoCapitalize="none"
             keyboardType="email-address"
             />
+            </View>
 
+            <View style={styles.inputWrapper}>
+            <Ionicons name="lock-closed-outline" size={20} color="#999" style={styles.inputIcon} />
             <TextInput 
             placeholder="Password"
             style={styles.input}
@@ -58,6 +65,14 @@ const LoginScreen = () => {
             onChangeText={setPassword}
             secureTextEntry
             />
+            <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                <Ionicons
+                name={showConfirmPassword ? "eye-off-outline" : "eye-outline"}
+                size={20}
+                color="#999"
+                />
+            </TouchableOpacity>
+            </View>
             <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
                 <Text style={styles.buttonText}>{loading ? "Logging in..." : "Login"}</Text>
             </TouchableOpacity>
@@ -86,13 +101,24 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#333',
     },
-    input: {
+    inputWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: '#ff9900',
         borderRadius: 8,
-        padding: 14,
+        paddingHorizontal: 10,
         marginBottom: 15,
     },
+    inputIcon: {
+        marginRight: 10,
+    },
+    input: {
+        flex: 1,
+        height: 50,
+        fontSize: 16,
+        paddingRight: 10, // for spacing before the icon
+      },
     button: {
         backgroundColor: '#ff9900',
         padding: 15,
