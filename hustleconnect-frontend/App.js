@@ -8,25 +8,30 @@ import SignupScreen from './screens/SignupScreen';
 import LoginScreen from './screens/LoginScreen';
 import { BookingProvider } from './context/BookingContext';
 import { AuthProvider } from './context/AuthContext';
+import HeroScreen from './screens/HeroScreen';
+import HomeScreen from './screens/HomeScreen';
 
 
 const Stack = createNativeStackNavigator(); 
 
 export default function App() {
   return (
-    
-      <AuthProvider>
+    <AuthProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
        <BookingProvider>
         <NavigationContainer>
-         <Stack.Navigator initialRouteName='Main' screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Main" component={BottomTab}  />
-          <Stack.Screen name="ServiceDetail" component={ServiceDetailScreen} options={{headerShown: true, title:'Service Detail'}} />
+         <Stack.Navigator initialRouteName='HeroScreen' screenOptions={{headerShown: false}}>
+          <Stack.Screen name="HeroScreen" component={HeroScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} options={{headerShown: true, title:'Sign Up'}} />
           <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: true, title:'Login'}} />
+          <Stack.Screen name="Main" component={BottomTab}  />
+          <Stack.Screen name="ServiceDetail" component={ServiceDetailScreen} options={{headerShown: true, title:'Service Detail'}} />
          </Stack.Navigator>
         </NavigationContainer> 
       </BookingProvider> 
-      </AuthProvider>
+      </GestureHandlerRootView>
+    </AuthProvider>
+    
     
     
   );
