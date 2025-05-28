@@ -86,7 +86,7 @@ const ProfileScreen = ()=> {
                     <>
 
                     <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-                        <Ionicons name="save" size={20} color="#fff" />
+                        <Ionicons name="save" size={20} color="black" />
                         <Text style={styles.saveText}>Save</Text>
                     </TouchableOpacity>
 
@@ -97,7 +97,7 @@ const ProfileScreen = ()=> {
                         setIsEditing(false);
                     }}
                     >
-                        <Ionicons name="close-outline" size={20} color="#fff" />
+                        <Ionicons name="close-outline" size={20} color="black" />
                         <Text style={styles.cancelText}>Cancel</Text>
                     </TouchableOpacity>
                     </>
@@ -111,7 +111,7 @@ const ProfileScreen = ()=> {
             </View>
 
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                <Ionicons name="log-out" size={20} color="#fff" />
+                <Ionicons name="log-out" size={20} color="black" />
                 <Text style={styles.logoutText}>Logout</Text>
             </TouchableOpacity>
         </View>
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 100,
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: '#ff9900',
     },
     profileImage: {
         width: 100,
@@ -154,8 +154,8 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 8,
+        borderColor: '#ff9900',
+        borderRadius: 10,
         padding: 10,
         fontSize: 16,
         backgroundColor: '#fff',
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#007bff',
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderRadius: 5,
+        borderRadius: 20,
     },
     editText: {
         color: '#fff',
@@ -187,10 +187,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#28a745',
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderRadius: 5,
+        borderRadius: 25,
     },
     saveText: {
-        color: '#fff',
+        color: 'black',
         marginLeft: 10,
     },
     cancelButton: {
@@ -199,10 +199,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#dc3545',
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderRadius: 5,
+        borderRadius: 25,
     },
     cancelText: {
-        color: '#fff',
+        color: 'black',
         marginLeft: 10,
     },
     phone: {
@@ -218,10 +218,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#ff9900',
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderRadius: 5,
+        borderRadius: 25,
     },
     logoutText: {
-        color: '#fff',
+        color: 'black',
         marginLeft: 10,
     },
     message: {
