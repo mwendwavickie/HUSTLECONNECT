@@ -46,7 +46,7 @@ const SignupScreen = () => {
 
         setLoading(true);
         try {
-            const response = await fetch("http://192:168.1.137:5000/api/auth/signup", {
+            const response = await fetch("http://192.168.1.137:5000/api/auth/signup", {
                 method: "POST",
                 headers: {"Content-Type": 'application/json'},
                 body: JSON.stringify({
@@ -63,7 +63,7 @@ const SignupScreen = () => {
                 }
                 login(data.user);
                 Alert.alert("Success", "Account created successfully");
-                navigation.navigate("Home");
+                navigation.navigate("Main");
             
         } catch (error) {
             Alert.alert("Error", error.message);
