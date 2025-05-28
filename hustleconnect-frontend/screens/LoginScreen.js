@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "reac
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
 
+
+
 const LoginScreen = () => {
     const navigation = useNavigation();
     const { login } = useContext(AuthContext);
@@ -10,6 +12,8 @@ const LoginScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+
+    
 
     const handleLogin =  async() => {
         if (!email || !password) {
@@ -22,7 +26,7 @@ const LoginScreen = () => {
                 body: JSON.stringify({email, password}),
             });
             const data = await response.json();
-            if (response.ok) throw new Error(data.message || "Login failed");
+            if (!response.ok) throw new Error(data.message || "Login failed");
 
             login(data.user);//save user data in context
             navigation.navigate("Main");
@@ -57,6 +61,7 @@ const LoginScreen = () => {
             <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
                 <Text style={styles.buttonText}>{loading ? "Logging in..." : "Login"}</Text>
             </TouchableOpacity>
+
             <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
                 <Text style={styles.link}>Don't have an account? Sign Up</Text>
             </TouchableOpacity>
@@ -95,6 +100,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 15,
     },
+    googlebutton: {
+        backgroundColor: '#4285F4',
+        padding: 15,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginBottom: 15,
+    },
+    
     buttonText: {
         color: 'black',
         fontSize: 16,
@@ -106,4 +119,4 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     
-})
+});
