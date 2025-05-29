@@ -13,7 +13,6 @@ const LoginScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
     
@@ -63,11 +62,11 @@ const LoginScreen = () => {
             style={styles.input}
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            secureTextEntry={!showPassword}
             />
-            <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                 <Ionicons
-                name={showConfirmPassword ? "eye-off-outline" : "eye-outline"}
+                name={showPassword ? "eye-off-outline" : "eye-outline"}
                 size={20}
                 color="#999"
                 />
