@@ -1,25 +1,24 @@
-import React from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React,{useContext} from 'react';
+import { Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import BottomTab from './navigation/BottomTab';
 import ServiceDetailScreen from './screens/ServiceDetailScreen';
 import SignupScreen from './screens/SignupScreen';
 import LoginScreen from './screens/LoginScreen';
 import { BookingProvider } from './context/BookingContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, AuthContext } from './context/AuthContext';
 import HeroScreen from './screens/HeroScreen';
 import HomeScreen from './screens/HomeScreen';
+import { ActivityIndicator } from 'react-native';
 
 
 const Stack = createNativeStackNavigator(); 
 
-export default function App() {
+const MainNavigator = () => {
   return (
-    <AuthProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-       <BookingProvider>
-        <NavigationContainer>
+
          <Stack.Navigator initialRouteName='HeroScreen' screenOptions={{headerShown: false}}>
           <Stack.Screen name="HeroScreen" component={HeroScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} options={{headerShown: true, title:'Sign Up'}} />
@@ -27,12 +26,32 @@ export default function App() {
           <Stack.Screen name="Main" component={BottomTab}  />
           <Stack.Screen name="ServiceDetail" component={ServiceDetailScreen} options={{headerShown: true, title:'Service Detail'}} />
          </Stack.Navigator>
-        </NavigationContainer> 
-      </BookingProvider> 
-      </GestureHandlerRootView>
-    </AuthProvider>
+  );
+
+};
+
+const AppContent = () => {
+  const { user, isAuthenticated } = useContext(AuthContext);
+  if (isAuthenticated === null) {
+    return <ActivityIndicator size="large" color="blue" style={{ flex: 1, justifyContent: 'center' }} />;
+  }
+  return (
+    <NavigationContainer>
+      <MainNavigator />
+    </NavigationContainer>
+  );
+};
+
+export default function App() {
+  return (
     
-    
+      <AuthProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <BookingProvider>
+           <AppContent />
+          </BookingProvider>
+        </GestureHandlerRootView>
+      </AuthProvider>
     
   );
 }
