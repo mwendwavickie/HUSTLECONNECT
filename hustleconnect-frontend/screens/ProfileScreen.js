@@ -40,6 +40,9 @@ const ProfileScreen = ()=> {
 
     return(
         <View style={styles.container}>
+            <Text style={styles.label}>Profile</Text>
+            <Text style={styles.message}>Welcome, {user.name || "User"}</Text>
+
             <View style={styles.profileContainer}>
                 <Image
                     source={{ uri: editedUser.profilePicture || 'https://via.placeholder.com/150' }}
@@ -126,6 +129,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    message: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        alignitems: 'left',
+        marginBottom: 30,
+
     },
     profileContainer: {
         marginBottom: 20,
