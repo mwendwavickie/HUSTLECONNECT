@@ -22,12 +22,13 @@ const BottomTab = () => {
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
             },
+            headerShown: false,
             tabBarActiveTintColor: 'tomato',
             tabBarInactiveTintColor: 'gray',
         })}
         
         >
-            <Tab.Screen name="Home" component={HomeScreen}  />
+            <Tab.Screen name="Home" component={HomeScreen}   />
             <Tab.Screen name="Services" component={ServiceScreen} />
             <Tab.Screen name="Bookings" component={BookingScreen} /> 
             <Tab.Screen name="Profile" component={ProfileScreen} /> 

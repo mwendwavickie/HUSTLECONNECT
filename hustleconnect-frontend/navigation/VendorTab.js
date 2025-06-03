@@ -7,6 +7,7 @@ import HomeScreen from "../screens/HomeScreen";
 import ServiceDetailScreen from "../screens/ServiceDetailScreen";
 
 import { Ionicons } from "@expo/vector-icons";
+import ProfileScreen from "../screens/ProfileScreen";
 
 
 const Tab = createBottomTabNavigator();
@@ -47,6 +48,7 @@ const VendorTab = () => {
             <Tab.Screen name="Dashboard" component={VendorStack} />
             <Tab.Screen name="AddService" component={AddServiceScreen} />
             <Tab.Screen name="MyBookings" component={VendorBookingScreen} />
+            <Tab.Screen name="Profile" component={ProfileScreen} />
             
         </Tab.Navigator>
     );
