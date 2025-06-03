@@ -1,17 +1,19 @@
 import React,{useContext} from 'react';
-import { Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import BottomTab from './navigation/BottomTab';
 import VendorTab from './navigation/VendorTab';
+
 import ServiceDetailScreen from './screens/ServiceDetailScreen';
 import SignupScreen from './screens/SignupScreen';
 import LoginScreen from './screens/LoginScreen';
-import { BookingProvider } from './context/BookingContext';
-import { AuthProvider, AuthContext } from './context/AuthContext';
 import HeroScreen from './screens/HeroScreen';
 import HomeScreen from './screens/HomeScreen';
+
+import { BookingProvider } from './context/BookingContext';
+import { AuthProvider, AuthContext } from './context/AuthContext';
 import { ActivityIndicator } from 'react-native';
 
 
@@ -33,17 +35,15 @@ const MainNavigator = () => {
 
 const AppContent = () => {
   const { user, isAuthenticated } = useContext(AuthContext);
+  const isVendor = user ?.role === 'vendor';
 
   if (isAuthenticated === null) {
     return <ActivityIndicator size="large" color="blue" style={{ flex: 1, justifyContent: 'center' }} />;
   }
+
   return (
     <NavigationContainer>
-      {user && user.role === 'vendor' ? (
-        <VendorTab /> // Vendor's tab navigator
-      ) : (
-        <MainNavigator /> // Main app navigator for regular users
-      )}
+      {isVendor ? <VendorTab /> : <MainNavigator />} 
     </NavigationContainer>
   );
 };
