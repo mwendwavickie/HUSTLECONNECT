@@ -17,7 +17,7 @@ const BottomTab = () => {
                 switch (route.name) {
                     case 'Home': iconName = 'home'; break;
                     case 'Services': iconName = 'briefcase'; break;
-                    case 'Booking': iconName = 'calendar'; break;
+                    case 'Bookings': iconName = 'calendar'; break;
                     case 'Profile': iconName = 'person'; break;
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
@@ -27,9 +27,9 @@ const BottomTab = () => {
         })}
         
         >
-            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Home" component={HomeScreen}  />
             <Tab.Screen name="Services" component={ServiceScreen} />
-            <Tab.Screen name="Booking" component={BookingScreen} /> 
+            <Tab.Screen name="Bookings" component={BookingScreen} /> 
             <Tab.Screen name="Profile" component={ProfileScreen} /> 
             
         </Tab.Navigator>
