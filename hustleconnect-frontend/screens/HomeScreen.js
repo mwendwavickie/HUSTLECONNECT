@@ -1,4 +1,4 @@
-import react, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, TextInput,Dimensions, Image  } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
@@ -22,15 +22,17 @@ const HomeScreen = () => {
         const fetchData = async () => {
             try {
                 const [servicesRes, categoriesRes ] = await Promise.all([
-                    fetch("http://192:168.1.137:5000/api/services/featured"),
-                    fetch("http://192:168.1.137:5000/api/categories")
+                    fetch("http://192.168.1.137:5000/api/services/featured"),
+                    fetch("http://192.168.1.137:5000/api/categories")
                 ]);
     
                 const servicesData = await servicesRes.json();
                 const categoriesData = await categoriesRes.json();
     
-                setFeaturedServices(servicesData);
-                setCategories(categoriesData);
+                // in useEffect
+                setFeaturedServices(Array.isArray(servicesData) ? servicesData : []);
+                setCategories(Array.isArray(categoriesData) ? categoriesData : []);
+
 
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -42,7 +44,7 @@ const HomeScreen = () => {
     }, []);
 
     const renderCarouselItem = ({ item }) => {
-        console.log("Carousel item:", item); // 👈 Add this
+        console.log("Carousel item:", item); //  Add this
     
         if (!item || !item.image || !item.title) {
             return <Text>Invalid item</Text>; // fallback
@@ -55,7 +57,7 @@ const HomeScreen = () => {
             >
                 <Image source={{ uri: item.image }} style={styles.carouselImage} />
                 <Text style={styles.carouselTitle}>{item.title}</Text>
-                <Text style={styles.carouselPrice}>${item.price}</Text>
+                <Text style={styles.carouselPrice}>Ksh. {item.price}</Text>
             </TouchableOpacity>
         );
     };
@@ -104,7 +106,7 @@ const HomeScreen = () => {
                     width={screenWidth}
                     height={200}
                     autoPlay={true}
-                    data={featuredServices}
+                    data={Array.isArray(featuredServices) ? featuredServices : []}
                     scrollAnimationDuration={1000}
                     renderItem={renderCarouselItem}
                 />
@@ -115,7 +117,7 @@ const HomeScreen = () => {
                 renderItem={renderCategory}
                 keyExtractor={(item) => item._id}
                 horizontal
-                showsHorizontalScrollIndicator={false}
+                showsHorizontalScrollIndicator={true}
                 contentContainerStyle={styles.categoriesList}
             />
         </View>
@@ -129,6 +131,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: "#fff",
+        marginTop: 50,
     },
     welcomeText: {
         fontSize: 20,
@@ -179,6 +182,7 @@ const styles = StyleSheet.create({
     },
     categoriesList:{
         paddingVertical :10
+        
     },
     categoryBox:{
         backgroundColor:"#fff",
