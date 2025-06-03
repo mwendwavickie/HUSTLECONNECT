@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {View, Text, StyleSheet, FlatList } from 'react-native';
-import { BookingContext } from '../components/BookingContext';
+import { BookingContext } from '../context/BookingContext';
 
 
 const BookingScreen = ()=> {
