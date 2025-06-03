@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import BottomTab from './navigation/BottomTab';
+import VendorTab from './navigation/VendorTab';
 import ServiceDetailScreen from './screens/ServiceDetailScreen';
 import SignupScreen from './screens/SignupScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -32,12 +33,17 @@ const MainNavigator = () => {
 
 const AppContent = () => {
   const { user, isAuthenticated } = useContext(AuthContext);
+
   if (isAuthenticated === null) {
     return <ActivityIndicator size="large" color="blue" style={{ flex: 1, justifyContent: 'center' }} />;
   }
   return (
     <NavigationContainer>
-      <MainNavigator />
+      {user && user.role === 'vendor' ? (
+        <VendorTab /> // Vendor's tab navigator
+      ) : (
+        <MainNavigator /> // Main app navigator for regular users
+      )}
     </NavigationContainer>
   );
 };
