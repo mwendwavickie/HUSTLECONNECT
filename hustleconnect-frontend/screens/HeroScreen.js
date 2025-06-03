@@ -5,11 +5,7 @@ import { View, Text, Button, StyleSheet, TouchableOpacity, ImageBackground, Imag
 const HeroScreen = ({ navigation }) => {
     
     return (
-        < ImageBackground 
-        source={require('../assets/Background.jpg')}
-        style={styles.background} 
-        resizeMode="cover"
-        >
+        
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
@@ -37,12 +33,14 @@ const HeroScreen = ({ navigation }) => {
                     <Button 
                         title="Explore Services"
                         onPress={() => navigation.navigate('Main')}
-                        color= "Tomato"
+                        color="#ff9900"
+                        textColor="black"
+                        
                     />
                 </View>
             </View>
         </View>
-        </ImageBackground>
+        
         );
 }
 export default HeroScreen;
@@ -59,7 +57,7 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         padding: 20,
-        backgroundColor: 'rgba(225, 225, 225,0.85',
+        backgroundColor: '#fff',
     },
     header: {
         flexDirection: 'row',
@@ -69,7 +67,7 @@ const styles = StyleSheet.create({
     link: {
         marginLeft: 20,
         fontSize: 16,
-        color: 'tomato',
+        color: 'black',
         fontWeight: '600',
     },
     logoContainer: {
@@ -103,6 +101,7 @@ const styles = StyleSheet.create({
         width: '70%',
         borderRadius: 15,
         overflow: 'hidden',
-        backgroundColor: 'tomato',
+        color: 'black',
+        
     }
 })
