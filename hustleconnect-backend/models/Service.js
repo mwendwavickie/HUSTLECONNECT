@@ -17,6 +17,10 @@ const serviceSchema = new mongoose.Schema(
             ref: "Category", 
             required: true 
         },
+        isFeatured: {
+            type: Boolean,
+            default: false
+        },
         User: { 
             type: mongoose.Schema.Types.ObjectId, 
             ref: "User", 

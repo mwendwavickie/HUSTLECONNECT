@@ -1,7 +1,7 @@
 import express from 'express';
-import Booking from '../models/Booking';
-import Service from '../models/Service';
-import authMiddleware from '../middleware/authMiddleware';
+import Booking from '../models/Booking.js';
+//import Service from '../models/Service.js';
+import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -35,7 +35,7 @@ router.post('/book', authMiddleware, async (req, res) => {
 // @desc    Get all bookings (Customer sees their bookings, Vendor sees their received bookings)
 // @access  Private (Customer/Vendor)
 
-router.get('/bookings', authmiddleware, async (req, res) => {
+router.get('/bookings', authMiddleware, async (req, res) => {
     try {
         let bookings;
         if (req.user.role === 'customer'){

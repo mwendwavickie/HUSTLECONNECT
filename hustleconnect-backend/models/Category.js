@@ -7,6 +7,10 @@ const categorySchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
+        icon: {
+            type: String,
+            default: "apps", // Default icon if not provided
+        },
     },
     { timestamps: true }
 );

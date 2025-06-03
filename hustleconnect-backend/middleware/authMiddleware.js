@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 const authMiddleware = async (req, res, next) => {
   try {
-    // Check if the request has an Authorization header
-    console.log("Authorization header:", req.header("Authorization")); // Log the header for debugging
-
+    
   const authHeader = req.header("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       console.error(" Invalid or missing Authorization header:", authHeader);
@@ -17,15 +16,16 @@ const authMiddleware = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded.id) {
-      console.error("❌ Token missing user ID:", decoded);
+      console.error("Token missing user ID:", decoded);
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    req.user = await User.findById(decoded.id).select("-password"); // Attach user info to request
+    const user = await User.findById(decoded.id).select("-password"); // Attach user info to request
     // Check if user exists
-    if (!req.user) {
+    if (!user) {
       return res.status(401).json({ message: "User not found" });
     }
+    
     req.user = user;
     console.log("Authenticated user:", req.user); // Log authenticated user for debugging
     next();

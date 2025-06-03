@@ -26,7 +26,7 @@ router.post ("/", authMiddleware, async (req, res) => {
         }
 
         // Convert category name to ObjectId
-        const categoryDoc = await Category.findOne({ name: category });
+        const categoryDoc = await Category.findById(category);
 
         if (!categoryDoc) {
             return res.status(400).json({ message: "Invalid category" });
@@ -39,7 +39,7 @@ router.post ("/", authMiddleware, async (req, res) => {
             description,
             price,
             category: categoryDoc._id, // Use ObjectId of the category
-            user: req.user._id,// Vendor Id
+            User: req.user._id,// Vendor Id
             contact,
             location,
         });
@@ -55,17 +55,32 @@ router.post ("/", authMiddleware, async (req, res) => {
 // @route GET/api/services
 // @desc Get all services with category filter
 // @access Public
-router.get("/", async (req, res)=> {
+router.get("/", async (req, res) => {
     try {
-        const {category} = req.query;
-        const filter = category ? { category} : {};
-        
-        const services = await Service.find(filter).populate("category", "name").populate("category", "name").populate("user", "name", "email");
-        res.status(200).json(services);
+      const { category } = req.query;
+      let filter = {};
+  
+      // If category is provided, look it up by name and use its _id in the filter
+      if (category) {
+        const categoryDoc = await Category.findOne({ name: category });
+        if (categoryDoc) {
+          filter.category = categoryDoc._id;
+        } else {
+          return res.status(404).json({ message: "Category not found" });
+        }
+      }
+  
+      const services = await Service.find(filter)
+        .populate("category", "name")
+        .populate("user", "name email"); // ✅ fixed populate call
+  
+      res.status(200).json(services); // ✅ Always returns an array
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+      console.error("Error fetching services:", error.message);
+      res.status(500).json({ message: "Server error" });
     }
-});
+  });
+  
 
 router.get("/:id", async (req, res) => {
     try {
@@ -130,6 +145,16 @@ router.delete("/:id", authMiddleware, async (req, res) => {
         res.status(500).json({ message: "Server error"});
     }
 });
+// routes/serviceRoutes.js
+router.get("/featured", async (req, res) => {
+    try {
+      const services = await Service.find({ isFeatured: true });
+      res.json(services);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch featured services" });
+    }
+  });
+  
 
 export default router;
 

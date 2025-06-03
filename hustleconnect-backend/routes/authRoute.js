@@ -3,12 +3,12 @@ import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 
-// @route   POST /api/auth/register
+// @route   POST /api/auth/signup
 // @desc    Register a new user
 
 const router = express.Router();
 
-router.post('/register', async(req,res) => {
+router.post('/signup', async(req,res) => {
     const {name, email, password, role} = req.body;
 
     const userRole = ["customer", "vendor", "admin"].includes(role) ? role : "customer";
@@ -53,7 +53,7 @@ router.post ('/login', async(req,res) => {
         const user = await User.findOne({email});
         console.log("User found:", user);
         if(!user) {
-            return res.sendStatus(400).json({message: "User not found"});
+            return res.status(400).json({message: "User not found"});
         }
         if (!user.password){
             return res.status(500).json({message: "User has no password"});
