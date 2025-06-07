@@ -55,160 +55,172 @@ const ServiceDetailScreen = ({ route }) => {
 };
 
 return (
-    <View style ={styles.container}>
-        
-        <Image
-        source={{uri: service.image || 'https://via.placeholder.com/150'}}
-        style={styles.image}
-        />
-        <Text style={styles.title}>{service.title}</Text>
-        <Text style={styles.description}>{service.description}</Text>
-        <Text style={styles.price}>Price: Ksh{service.price}</Text>
-        <Text style={styles.category}>Category: {service.category.name}</Text>
-        <Text style={styles.vendor}>By: {service.User?.name || "Unknown"}</Text>
+    <View style={styles.container}>
+  <Image
+    source={{ uri: service.image || 'https://via.placeholder.com/150' }}
+    style={styles.image}
+  />
 
-        <Text style={styles.dateText}>Select Date:</Text>
+  <View style={styles.infoCard}>
+    <Text style={styles.title}>{service.title}</Text>
+    <Text style={styles.description}>{service.description}</Text>
 
-        <TouchableOpacity 
-        onPress={() => setShowPicker(true)}
-        style={styles.dateButton}
-        >
-            <Ionicons name="calendar" size={24} color="black" />
-        <Text style={styles.date}>{selectedDate.toLocaleDateString()}</Text>
-        
-        </TouchableOpacity>
-
-        {showPicker && (
-            <DateTimePicker
-                value={selectedDate}
-                mode="date"
-                display="default"
-                onChange={handleDateChange}
-                minimumDate={new Date()}
-            />
-        )}
-        <Text style={styles.dateText}>Select Time:</Text>
-        <TouchableOpacity 
-            onPress={() => setShowTimePicker(true)}
-            style={styles.dateButton}
-        >
-            <Ionicons name="time" size={24} color="black" />
-            <Text style={styles.date}>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-        </TouchableOpacity>
-
-        {showTimePicker && (
-        <DateTimePicker
-            value={time}
-            mode="time"
-            display="default"
-            onChange={(event, selectedTime) => {
-                setShowTimePicker(false);
-                if (selectedTime) setTime(selectedTime);
-            }}
-        />
-     )}
-
-
-        {isAvailable !== null && (
-            <Text style={styles.availabilityText}>
-                {isAvailable ? "Available" : "Not Available"}
-            </Text>
-
-        )}
-        <TouchableOpacity 
-        onPress={handleBooking}
-        style={[styles.bookButton,
-        {backgroundColor: isAvailable ? '#ff9900' : '#ccc'}]}
-        disabled={!isAvailable}
-        >
-            <Text style={styles.bookButtonText}>Confirm Booking</Text>
-        </TouchableOpacity>
+    <View style={styles.infoRow}>
+      <Ionicons name="pricetag" size={18} color="#555" />
+      <Text style={styles.price}>Ksh {service.price}</Text>
     </View>
 
-    
-)
+    <View style={styles.infoRow}>
+      <Ionicons name="layers-outline" size={18} color="#555" />
+      <Text style={styles.category}>Category: {service.category?.name}</Text>
+    </View>
+
+    <View style={styles.infoRow}>
+      <Ionicons name="person-outline" size={18} color="#555" />
+      <Text style={styles.vendor}>By: {service.User?.name || "Unknown"}</Text>
+    </View>
+  </View>
+
+  {/* Date Picker */}
+  <Text style={styles.label}>Select Date</Text>
+  <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.dateTimeButton}>
+    <Ionicons name="calendar-outline" size={22} color="#333" />
+    <Text style={styles.dateText}>{selectedDate.toLocaleDateString()}</Text>
+  </TouchableOpacity>
+  {showPicker && (
+    <DateTimePicker
+      value={selectedDate}
+      mode="date"
+      display="default"
+      onChange={handleDateChange}
+      minimumDate={new Date()}
+    />
+  )}
+
+  {/* Time Picker */}
+  <Text style={styles.label}>Select Time</Text>
+  <TouchableOpacity onPress={() => setShowTimePicker(true)} style={styles.dateTimeButton}>
+    <Ionicons name="time-outline" size={22} color="#333" />
+    <Text style={styles.dateText}>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+  </TouchableOpacity>
+  {showTimePicker && (
+    <DateTimePicker
+      value={time}
+      mode="time"
+      display="default"
+      onChange={handleTimeChange}
+    />
+  )}
+
+  {/* Availability */}
+  {isAvailable !== null && (
+    <Text style={[styles.availabilityText, { color: isAvailable ? 'green' : 'red' }]}>
+      {isAvailable ? 'Available for booking' : 'Not available – choose a future date'}
+    </Text>
+  )}
+
+  {/* Confirm Button */}
+  <TouchableOpacity
+    onPress={handleBooking}
+    style={[styles.bookButton, { backgroundColor: isAvailable ? '#ff9900' : '#ccc' }]}
+    disabled={!isAvailable}
+  >
+    <Text style={styles.bookButtonText}>Confirm Booking</Text>
+  </TouchableOpacity>
+</View>
+    );
+
 };
 export default ServiceDetailScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
-        padding: 20,
-        marginTop: 20,
+      flex: 1,
+      padding: 20,
+      backgroundColor: '#fff',
     },
     image: {
-        width: '100%',
-        height: 200,
-        borderRadius: 10,
-        marginBottom: 20,
+      width: '100%',
+      height: 220,
+      borderRadius: 12,
+      marginBottom: 20,
+      resizeMode: 'cover',
+    },
+    infoCard: {
+      backgroundColor: '#f9f9f9',
+      padding: 15,
+      borderRadius: 10,
+      marginBottom: 20,
+      elevation: 2,
     },
     title: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: 'orange',
+      fontSize: 22,
+      fontWeight: 'bold',
+      color: '#ff9900',
+      marginBottom: 5,
     },
     description: {
-        fontSize: 15,
-        marginBottom: 10,
-        color: '#555',
+      fontSize: 15,
+      color: '#555',
+      marginBottom: 10,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 5,
     },
     price: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: '#333',
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginLeft: 8,
+      color: '#333',
+    },
+    category: {
+      fontSize: 15,
+      color: '#333',
+      marginLeft: 8,
     },
     vendor: {
-        fontSize: 14,
-        color: '#777',
-        marginBottom: 15,
+      fontSize: 14,
+      color: '#666',
+      marginLeft: 8,
     },
-    
-    category: {
-        fontSize: 14,
-        color: '#777',
-        marginBottom: 10,
+    label: {
+      fontSize: 16,
+      fontWeight: '500',
+      marginBottom: 6,
+      color: '#333',
     },
-    dateButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 10,
-        borderRadius: 6,
-        borderWidth: 1,
-        width: '50%',
-        borderColor: '#ddd',
-        marginBottom: 20,
-        
+    dateTimeButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 12,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: '#ddd',
+      marginBottom: 15,
+      backgroundColor: '#fafafa',
     },
     dateText: {
-        fontSize: 16,
-        marginBottom: 10,
-        color: '#333',
-        marginRight: 10,
-    },
-    
-    date: {
-        fontSize: 16,
-        marginLeft: 15,
-
+      fontSize: 16,
+      marginLeft: 12,
+      color: '#333',
     },
     availabilityText: {
-        fontSize: 16,
-        marginBottom: 20,
-        marginVertical: 10,
-        fontWeight:600,
+      fontSize: 15,
+      fontWeight: 'bold',
+      marginVertical: 12,
     },
     bookButton: {
-        padding: 15,
-        borderRadius: 6,
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'orange',
+      padding: 15,
+      borderRadius: 8,
+      alignItems: 'center',
+      marginTop: 10,
     },
     bookButtonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
+      fontSize: 16,
+      color: '#fff',
+      fontWeight: 'bold',
     },
-    
-})
+  });
+  
