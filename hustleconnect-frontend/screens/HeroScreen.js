@@ -29,15 +29,12 @@ const HeroScreen = ({ navigation }) => {
                 <Text style={styles.subtitle}>Find and Book your trusted local services</Text>
             
 
-                <View style={styles.buttonContainer}>
-                    <Button 
-                        title="Explore Services"
-                        onPress={() => navigation.navigate('Main')}
-                        color="#ff9900"
-                        textColor="black"
-                        
-                    />
-                </View>
+                <TouchableOpacity
+                    style={styles.exploreButton}
+                    onPress={() => navigation.navigate('Main')}
+                >
+                    <Text style={styles.exploreButtonText}>Explore Services</Text>
+                </TouchableOpacity>
             </View>
         </View>
         
@@ -97,11 +94,16 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         textAlign:'center',
     },
-    buttonContainer: {
-        width: '70%',
+    exploreButton: {
+        backgroundColor: '#ff9900', // Orange background
+        paddingVertical: 15,
+        paddingHorizontal: 30,
         borderRadius: 15,
-        overflow: 'hidden',
-        color: 'black',
-        
-    }
+        alignItems: 'center',
+    },
+    exploreButtonText: {
+        color: 'black', // White text
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
 })
