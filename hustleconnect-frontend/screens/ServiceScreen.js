@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         
     },
-    
     searchInput: {
         flex: 1,
         height: 40,
@@ -184,11 +183,13 @@ const styles = StyleSheet.create({
         elevation: 2,
         marginBottom: 15,
         width: '48%',
+        borderWidth: 1,
+        borderColor: '#ff9900',
     },
     title:{
         fontSize: 18,
         fontWeight: 'bold',
-        color: 'orange',
+        color: 'black',
     },
     description: {
         fontSize: 14,
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
     price: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: 'orange',
+        color: 'black',
     },
     vendor: {
         fontSize: 12,
@@ -215,11 +216,11 @@ const styles = StyleSheet.create({
     },
     bookBtnText: {
         fontSize: 16,
-        color: '#fff',
-        marginLeft: 5,
+        color: 'black',
+        marginLeft: 15,
     },
     bookBtnIcon: {
-        marginLeft: 5,
+        marginLeft: 10,
     },
     noResult: {
         textAlign: 'center',
