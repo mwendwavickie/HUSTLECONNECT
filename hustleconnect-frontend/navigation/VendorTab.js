@@ -36,6 +36,8 @@ const VendorTab = () => {
                     iconName = "add-circle-outline";
                 } else if (route.name === "MyBookings") {
                     iconName = "bookmarks-outline";
+                } else if (route.name === "Profile") {
+                    iconName = "person-outline";
                 }
 
                 return <Ionicons name={iconName} size={size} color={color} />;
