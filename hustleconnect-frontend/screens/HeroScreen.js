@@ -18,7 +18,7 @@ const HeroScreen = ({ navigation }) => {
 
             <View style={styles.logoContainer}>
                 <Image
-                    //source={require('../assets/logo.png')}
+                    source={require('../assets/hustle-connectlogo.png')}
                     style={styles.logo}
                     resizeMode="contain"
                 />
@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     logoContainer: {
-        alignItems: 'center',
-        marginVertical: 20
+        justifyContent: 'flex-start',
+        marginVertical: 20,
     },
     logo: {
         width: 150,

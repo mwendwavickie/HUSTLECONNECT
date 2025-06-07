@@ -119,8 +119,17 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+
+        <View style={styles.logoContainer}>
+            <Image
+                source={require('../assets/hustle-connectlogo.png')}
+                style={styles.logo}
+                resizeMode="contain"
+            />
+        
       {/* Welcome user */}
       <Text style={styles.welcomeText}>Welcome, {user.name || "Guest"}</Text>
+      </View>
 
       {/* Search bar with filter */}
       <View style={styles.searchContainer}>
@@ -190,11 +199,22 @@ const styles = StyleSheet.create({
       backgroundColor: "#fff",
       marginTop: 50,
     },
+    logoContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginVertical: 2,
+    },
+    logo: {
+        width: 50,
+        height: 50
+    },
     welcomeText: {
       fontSize: 20,
       fontWeight: "bold",
       marginBottom: 20,
       color: "#333",
+      marginLeft: 10,
+      marginTop: 10,
     },
     searchContainer: {
       flexDirection: "row",
